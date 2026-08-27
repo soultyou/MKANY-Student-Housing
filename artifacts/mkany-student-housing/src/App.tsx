@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Heart, Search, Menu, X, Moon, Sun, ShieldCheck, ChevronDown, MapPin, GraduationCap, Sparkles, ArrowLeft, Ruler, BedDouble, Bath, Users, Building2, CalendarDays, Wifi, Sofa, Star, Check, LockKeyhole, Plus, BarChart3, Eye, Clock3, SlidersHorizontal, MessageCircle, FileText, Send, RefreshCw, Copy, Download, Home as HomeIcon, UserRound, Zap, Instagram, Linkedin, Facebook, Sparkle, CircleDollarSign, Crown } from "lucide-react";
 import { Router as WouterRouter, useLocation } from "wouter";
-import logo from "@assets/Gemini_Generated_Image_bpy2khbpy2khbpy2-removebg-preview_1787789248126.png";
+const logo = "/mkany-logo.png";
 
 type Property = {
   id: number; title: string; address: string; city: string; university: string; pricePerMonth: number;
