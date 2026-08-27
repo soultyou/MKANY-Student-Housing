@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "MKANY Student Housing"
+description = "An Arabic RTL student housing marketplace prototype for Egypt, with verified listings, AI roommate matching, booking flows, and an owner dashboard."
+version = "1.0.0"
+id = "artifacts/mkany-student-housing"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20486
+
+[services.development]
+run = "pnpm --filter @workspace/mkany-student-housing run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/mkany-student-housing", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/mkany-student-housing/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20486"
+BASE_PATH = "/"

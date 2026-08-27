@@ -1,0 +1,363 @@
+Act as a world-class Frontend Developer, UI/UX Designer, and PropTech Product Strategist.
+Build a pixel-perfect, investor-ready interactive prototype for **"MKANY" (مكاني)** —
+Egypt's first AI-powered student housing marketplace — as a single React.js component
+using Tailwind CSS. Zero backend. All data is hardcoded JSON.
+
+Design priority: **clarity over decoration.** Every screen should feel calm, uncluttered,
+and easy to scan — not busy. One accent color used sparingly, generous white space,
+no more than two badges per card, no competing visual effects stacked on top of each other.
+
+═══════════════════════════════════════════════════════════
+BUSINESS MODEL CONTEXT (build everything around this)
+═══════════════════════════════════════════════════════════
+
+MKANY operates a dual-sided marketplace:
+- SUPPLY SIDE: Property owners list rooms/apartments near universities.
+- DEMAND SIDE: Students discover, verify, and book housing.
+
+Revenue streams to make VISIBLE in the UI:
+1. Annual Student Booking Package: 1,200 EGP/year (unlimited access + AI features)
+2. Owner Listing Fee: 1,000 EGP/year (show in Owner Dashboard)
+3. Premium Listing Badge: 150 EGP/month (visible "مميز" badge on cards)
+4. Cleaning/Services Marketplace: commission on bookings (show partner logos)
+5. Data Insights (B2B): show a teaser "تقرير السوق للمستثمرين" locked section
+
+═══════════════════════════════════════════════════════════
+1. GLOBAL REQUIREMENTS
+═══════════════════════════════════════════════════════════
+
+- Full Arabic RTL UI. Font: Cairo (Google Fonts via @import).
+- Dark Mode default (Deep Navy #0B192C, cards #112240, accent #64FFDA).
+- Light Mode: clean white (#FAFAFA, cards #FFFFFF, accent #0B4F6C).
+- Instant Dark/Light toggle in header, persisted in React state.
+- Fully responsive: mobile-first (375px), tablet (768px), desktop (1280px).
+- Smooth framer-motion-style CSS transitions (use Tailwind transitions,
+  no external animation libraries needed).
+- Premium vibe achieved through restraint: one glassmorphism panel per screen at most,
+  one gradient CTA style reused consistently, subtle shadow depth on cards.
+  Do not layer multiple gradients, glows, and badges on the same element.
+
+═══════════════════════════════════════════════════════════
+2. HEADER & NAVIGATION
+═══════════════════════════════════════════════════════════
+
+Sticky header with:
+- MKANY logo: use the uploaded logo file (attached) as the site logo in the
+  header, instead of the text placeholder. Size it to fit the header cleanly
+  in both Dark and Light modes, and keep it crisp across mobile, tablet, and
+  desktop breakpoints. (Fallback only if no logo file is provided: text-based
+  "مكاني 🏠" styled with gradient text.)
+- Nav links: الرئيسية | اكتشف السكن | للملاك | من نحن
+- Right side: Dark/Light toggle + "تسجيل الدخول" ghost button +
+  "انضم مجانًا" gradient CTA button.
+- On mobile: hamburger menu with slide-in drawer.
+- Trust bar below header:
+  "🏠 +2,400 وحدة سكنية | 🎓 15 جامعة | ⭐ 4.8/5 تقييم الطلاب | 🔒 دفع آمن 100%"
+
+═══════════════════════════════════════════════════════════
+3. HERO SECTION
+═══════════════════════════════════════════════════════════
+
+- Full-width hero with animated gradient background
+  (deep navy → purple → teal).
+- Large headline: "اسكن بذكاء، ادرس بثقة"
+  subheadline: "أول منصة مصرية للسكن الطلابي بالذكاء الاصطناعي"
+- Social proof row: Avatar stack (5 overlapping avatars) +
+  "انضم لـ +12,000 طالب مصري"
+- Search Card (floating, glassmorphism):
+  * Dropdown: "المدينة / الجامعة"
+    Options: جامعة كفر الشيخ | جامعة طنطا | جامعة المنصورة |
+             جامعة الإسكندرية | جامعة دمياط
+  * Dropdown: "نوع السكن"
+    Options: غرفة فردية | غرفة مزدوجة | استوديو | شقة مشتركة
+  * Dropdown: "الميزانية الشهرية"
+    Options: أقل من 800 جنيه | 800-1500 جنيه | 1500-3000 جنيه | أكثر من 3000 جنيه
+  * Big "🔍 ابحث الآن" button (gradient, full-width on mobile).
+  * Quick filters chips below:
+    [قريب من الجامعة] [واي فاي مجاني] [مفروش بالكامل] [بنات فقط] [0% عمولة]
+
+═══════════════════════════════════════════════════════════
+4. STATS SECTION (investor-facing)
+═══════════════════════════════════════════════════════════
+
+Animated counter cards (count up on scroll-into-view simulation):
+- "2,400+" وحدة سكنية مُتحقق منها
+- "12,000+" طالب مسجّل
+- "98%" نسبة رضا الطلاب
+- "0%" عمولة سماسرة
+
+═══════════════════════════════════════════════════════════
+5. PROPERTY LISTINGS
+═══════════════════════════════════════════════════════════
+
+Filterable grid (3 tabs: الكل | متاح الآن | الأكثر تقييمًا).
+Show 6 property cards using these REAL Egyptian student locations:
+
+Card 1: "شارع الجلاء، كفر الشيخ" — 950 جنيه/شهر — غرفة مزدوجة
+Card 2: "شارع النباوي المهندس، كفر الشيخ" — 750 جنيه/شهر — غرفة في شقة
+Card 3: "شارع جيهان، المنصورة" — 1,200 جنيه/شهر — استوديو
+Card 4: "شارع الجامعة، طنطا" — 850 جنيه/شهر — غرفة مزدوجة
+Card 5: "ميت خميس، المنصورة" — 1,800 جنيه/شهر — شقة كاملة
+Card 6: "شارع بورسعيد، كفر الشيخ" — 650 جنيه/شهر — سرير في غرفة مشتركة
+
+Each property object in the JSON must carry full unit details, not just price:
+```
+{
+  id, title, address, city, pricePerMonth,
+  roomType, areaSqm, bedrooms, bathrooms, floor,
+  furnishing: "مفروشة بالكامل" | "مفروشة جزئياً" | "غير مفروشة",
+  availableFrom, currentRoommates,
+  images: [array of real photo URLs — see Section 6],
+  video360Url: real 360°/video tour URL if available, else null,
+  verified: boolean, premium: boolean, livabilityScore: number
+}
+```
+
+Each card MUST have:
+- A real photo as the cover image (see Section 6 for image sourcing). Use a CSS
+  gradient placeholder ONLY as a fallback if an image fails to load — never as
+  the default look of a card.
+- Badges: keep to two maximum — "✅ متحقق منه" (Verified) and, only if premium,
+  "⭐ مميز". Do not stack additional badges on the image.
+- "0% عمولة سماسرة" shown once, as small text under the price — not as a badge.
+- Livability Score bar: "مؤشر جودة الحياة: 87/100" with a single-color progress bar.
+- Quick stats row, now expanded to the essentials students actually compare:
+  📐 المساحة (م²) | 🛏 عدد الغرف | 🚿 الحمامات | 👥 عدد الشركاء الحاليين
+- "عرض التفاصيل" button → opens Property Detail Panel (Section 6).
+- Heart/Save icon (toggleable, saves to React state).
+
+═══════════════════════════════════════════════════════════
+6. PROPERTY DETAIL PANEL — SINGLE SCROLLABLE VIEW (no tabs)
+═══════════════════════════════════════════════════════════
+
+Important: do **not** split this into separate tab pages. Everything below lives
+on one continuous, well-organized scrollable panel (full-screen on mobile), in
+this order, with clear section dividers and consistent spacing so it reads
+calmly rather than feeling crowded:
+
+**A — Media block (top)**
+- Main photo/video viewer using real content:
+  * Use real photo URLs for the gallery (e.g. a stable stock-photo/placeholder
+    image service such as Unsplash Source or picsum.photos, keyed to interior/
+    room-style queries) instead of CSS gradient art, so the demo looks like an
+    actual product. A gradient "image unavailable" fallback should only appear
+    if a real image genuinely fails to load.
+  * If the property's `video360Url` is set, embed the real 360°/walkthrough
+    video (via `<video>` or an `<iframe>` for hosted tours) as the primary
+    "tour" view. Only if no real 360° media exists for that property, fall back
+    to the simulated CSS panorama scroll (labelled clearly as "معاينة تخيلية"
+    so it's never mistaken for real footage).
+  * A small, unobtrusive segmented control ("صور" / "جولة 360°") switches
+    between the two inside this one media block — this is a local toggle, not
+    a page-level tab.
+  * Thumbnail strip below for switching between photos.
+
+**B — Key facts grid (immediately below the media)**
+A clean icon + label + value grid — this is the section that must never be
+missing again:
+- 📐 المساحة: `areaSqm` م²
+- 🛏 عدد الغرف: `bedrooms`
+- 🚿 عدد الحمامات: `bathrooms`
+- 🏢 الدور: `floor`
+- 🛋 نوع الفرش: `furnishing`
+- 📅 تاريخ التوفر: `availableFrom`
+- 👥 عدد الشركاء الحاليين: `currentRoommates`
+
+**C — Services & distances**
+Show 6 nearby services with distance, walk time, and rating:
+- 🏥 أقرب مستشفى: 500م | 8 دقائق مشياً | ⭐⭐⭐⭐½ (4.5)
+- 💊 صيدلية: 150م | 2 دقائق | ⭐⭐⭐⭐⭐ (5.0)
+- 🛒 سوبرماركت: 300م | 5 دقائق | ⭐⭐⭐⭐ (4.2)
+- 🚌 محطة مواصلات: 200م | 3 دقائق | ⭐⭐⭐⭐ (4.0)
+- 🎓 بوابة الجامعة: 1.2كم | 15 دقيقة | ⭐⭐⭐⭐⭐ (4.8)
+- ☕ كافيه / مطعم: 100م | 1 دقيقة | ⭐⭐⭐⭐½ (4.6)
+
+**D — Reviews**
+3 student reviews with avatar (colored initials), name, university, star
+rating, and comment text, plus a summary line: "التقييم الإجمالي: 4.7/5 بناءً
+على 48 تقييم".
+
+**E — Sticky action footer**
+Keep the two primary CTAs pinned at the bottom of the panel at all times (so
+the person never has to scroll back up):
+- "🤖 إيجاد شريك سكن بالذكاء الاصطناعي" (opens AI Roommate Flow)
+- "📅 احجز الآن" (opens Booking/FinTech Flow)
+
+═══════════════════════════════════════════════════════════
+7. KILLER FEATURE 1: AI ROOMMATE MATCHING
+═══════════════════════════════════════════════════════════
+
+Opens as a multi-step modal:
+
+STEP 1 — Preference Form (6 questions):
+- مواعيد النوم: [نهاري] [ليلي] [مرن]  (button group)
+- مستوى النظافة: slider 1-5
+- بيئة المذاكرة: [هادئ جداً] [موسيقى هادئة] [مرن]
+- التدخين: [نعم] [لا]
+- الحيوانات الأليفة: [مقبول] [غير مقبول]
+- الميزانية القصوى: dropdown
+
+"تحليل بالذكاء الاصطناعي 🤖" button.
+
+STEP 2 — Loading State (2 seconds):
+Animated spinner + rotating messages every 500ms:
+"🔍 تحليل أنماط السلوك..."
+"🧠 معالجة بيانات 12,000 طالب..."
+"✨ إيجاد أفضل تطابق..."
+"📊 حساب نسبة التوافق..."
+
+STEP 3 — Compatibility Dashboard:
+- Large circular progress indicator: "94% توافق"
+  (CSS conic-gradient circle, animated).
+- Profile card of matched student: name (مريم أحمد),
+  university, major, avatar initials.
+- 4 comparison bars with labels and % for both users:
+  * مستوى النظافة: أنت 85% | مريم 90%
+  * مواعيد النوم: أنت 70% | مريم 75%
+  * بيئة المذاكرة: أنت 95% | مريم 88%
+  * الالتزام المالي: أنت 100% | مريم 95%
+- Compatibility verdict badge: "توافق ممتاز 🎯"
+- Two buttons:
+  "📨 إرسال طلب سكن مشترك" (primary)
+  "🔄 ابحث مجدداً" (secondary)
+
+═══════════════════════════════════════════════════════════
+8. KILLER FEATURE 2: FINTECH BOOKING FLOW
+═══════════════════════════════════════════════════════════
+
+Multi-step modal (show step progress bar at top: ① الباقة ← ② الدفع ← ③ التأكيد).
+
+Pull the selected property's real monthly rent (`pricePerMonth`) into every
+step below — the flow must always show, side by side and clearly distinct:
+**قيمة إيجار الوحدة الشهري** and **رسوم باقة مكاني السنوية**, so it's obvious
+these are two separate payments, made at two separate times.
+
+STEP 1 — Annual Booking Package:
+Pricing card (highlighted, premium):
+  "باقة مكاني السنوية"
+  ~~1,200 جنيه~~ → 500 جنيه / سنة  (show savings badge "وفّر 58%")
+Directly below the price, show a compact summary line pulling the selected
+unit's real rent, e.g.: "إيجار الوحدة المختارة: 950 جنيه / شهر (يُدفع لاحقًا
+للمالك، منفصل عن رسوم الباقة)."
+Benefits list (✅ checkmarks):
+  ✅ 0% عمولة سماسرة طوال العام
+  ✅ مطابقة ذكية غير محدودة لشركاء السكن
+  ✅ التحقق الموثق من الوحدات السكنية
+  ✅ خصم 20% على خدمات النظافة الشهرية
+  ✅ إدارة مالية وعقود إلكترونية آمنة
+  ✅ أولوية الحجز للوحدات الجديدة
+  ✅ دعم عملاء 24/7
+
+Clear explanatory note (shown once, plainly, not buried):
+"ملحوظة: المبلغ المدفوع الآن هو رسوم باقة مكاني فقط. بعد الدفع سيتم توقيع
+العقد الإلكتروني فورًا، ويُدفع إيجار الوحدة مباشرة عند استلامها في موعد
+التسليم المتفق عليه."
+
+"المتابعة للدفع →" button.
+
+STEP 2 — Payment Options:
+Two payment cards (selectable with radio):
+- Paymob: logo area + "بطاقة بنكية / محفظة إلكترونية"
+  Fields: Card Number (masked input), Expiry, CVV
+- Fawry: logo area + "ادفع في أي منفذ فوري"
+  Show: Reference Code "FWR-847291" (fake, copyable)
+  Instructions: "اذهب لأقرب منفذ فوري وادفع الكود خلال 24 ساعة"
+
+Payment summary strip above the "إتمام الدفع" button, showing the amount being
+paid now (باقة مكاني السنوية — 500 جنيه) distinctly from the unit's monthly
+rent (شown as "يُستحق لاحقًا").
+
+"✔ إتمام الدفع" button.
+
+STEP 3 — Processing (2 seconds):
+Spinning loader + "جاري معالجة الدفع بأمان... 🔒"
+Then success screen:
+- Large ✅ green checkmark (animated scale-in).
+- "تم الدفع بنجاح! 🎉"
+- Subscription details: "عضويتك سارية حتى: ديسمبر 2025"
+- Transaction ID: "TXN-MKN-20241201-00847"
+- Move-in note, pulling the property's `availableFrom` date: "📅 موعد استلام
+  الوحدة المتوقع: [التاريخ] — سيتم تسليم المفاتيح ودفع الإيجار الشهري مباشرة
+  للمالك في هذا الموعد."
+- Two buttons:
+  "📄 تحميل العقد الإلكتروني" (triggers fake download toast)
+  "🏠 استعرض وحداتك المحفوظة"
+
+═══════════════════════════════════════════════════════════
+9. OWNER DASHBOARD (separate view/tab)
+═══════════════════════════════════════════════════════════
+
+Toggle button in nav: "للملاك" → shows Owner Dashboard view:
+- Welcome card: "مرحباً، أحمد محمد 👋 | مالك عقار موثّق"
+- Stats row: "3 وحدات مُدرجة | 47 مشاهدة هذا الأسبوع | 8 طلبات حجز معلقة"
+- Revenue card: "إيراداتك هذا الشهر: 2,850 جنيه" with mini bar chart (CSS).
+- Listed Units table (3 rows) with status badges:
+  [مشغول] [متاح] [قيد المراجعة]
+- "➕ إضافة وحدة جديدة" button (opens a simple form modal that captures the
+  same key-facts fields as Section 6B: المساحة، عدد الغرف، عدد الحمامات،
+  الدور، نوع الفرش).
+- Upgrade prompt: "ارفع وحدتك للقائمة المميزة — +300% مشاهدات مقابل 150 جنيه/شهر"
+
+═══════════════════════════════════════════════════════════
+10. HOW IT WORKS SECTION
+═══════════════════════════════════════════════════════════
+
+3 steps with icons, numbers, and description:
+① "أنشئ حسابك مجاناً" — "سجّل في دقيقة واحدة"
+② "اكتشف وحدات موثّقة" — "فلتر حسب الجامعة، الميزانية، والمواصفات"
+③ "احجز بأمان بدون عمولة" — "وقّع العقد إلكترونياً وادفع بثقة"
+
+═══════════════════════════════════════════════════════════
+11. TESTIMONIALS
+═══════════════════════════════════════════════════════════
+
+3 rotating testimonial cards (auto-rotate every 3s with dot nav):
+Each: student name + university + photo (colored initials) + 5 stars + quote.
+Quote 1: "وفّرت 800 جنيه في السنة وعشت قريب من الكلية بدون ضغط"
+Quote 2: "الذكاء الاصطناعي طابقني مع صاحبتي المثالية، زي ما اخترت بيدي"
+Quote 3: "أول مرة أحجز غرفة بعقد حقيقي من غير سمسار"
+
+═══════════════════════════════════════════════════════════
+12. FOOTER
+═══════════════════════════════════════════════════════════
+
+- Logo + tagline: "اسكن بذكاء، ادرس بثقة"
+- Links columns: [المنصة] [للملاك] [الدعم] [الشركة]
+- Trust badges: "🔒 SSL آمن | 📋 رخصة رقم EG-2024-PROP | 🏆 أفضل ناشئة 2024"
+- Copyright: "© 2024 مكاني — جميع الحقوق محفوظة"
+
+═══════════════════════════════════════════════════════════
+TECHNICAL IMPLEMENTATION NOTES
+═══════════════════════════════════════════════════════════
+
+State Management (all React useState):
+- `darkMode` (boolean)
+- `activeView` ('listings' | 'owner-dashboard')
+- `selectedProperty` (object | null)
+- `mediaMode` ('photos' | 'video360') — local toggle inside the detail panel
+- `savedProperties` (array of IDs)
+- `aiStep` (0 | 1 | 2 | 3)
+- `bookingStep` (0 | 1 | 2 | 3)
+- `filterTab` ('all' | 'available' | 'top-rated')
+- `aiFormData` (object)
+- `selectedPayment` ('paymob' | 'fawry')
+
+Fake loading states: use setTimeout inside useEffect triggered by step change.
+
+CSS requirements:
+- Real photo URLs for property images (see Section 6A); CSS gradient art is a
+  fallback only, never the default.
+- Tailwind utility classes ONLY (no custom CSS files).
+- Use `transition-all duration-300` everywhere for smoothness.
+- Modal backdrop: `fixed inset-0 bg-black/60 backdrop-blur-sm z-50`.
+- Glassmorphism: `bg-white/10 backdrop-blur-md border border-white/20` — use
+  sparingly (search card and one modal panel at most), not on every element.
+- Gradient CTA: `bg-gradient-to-r from-teal-500 to-cyan-400`, reused
+  consistently rather than introducing new gradients per section.
+- Circular progress (AI score): CSS `conic-gradient` in inline style.
+
+Quality bar: The prototype MUST look like it was built by a $500k/year Silicon
+Valley team — but "premium" here means restrained and easy to scan, not
+maximal. Every screen should feel calm at a glance. No placeholder text like
+"lorem ipsum". All content in Arabic. All numbers realistic for the Egyptian
+student market.
