@@ -1,0 +1,28 @@
+kind = "video"
+previewPath = "/mkany-story-video/"
+title = "MKANY Brand Story Video"
+description = "A short animated Arabic product story introducing MKANY's verified student housing marketplace, AI roommate matching, secure booking, and owner marketplace."
+version = "1.0.0"
+id = "artifacts/mkany-story-video"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/mkany-story-video/" ]
+localPort = 25273
+
+[services.development]
+run = "pnpm --filter @workspace/mkany-story-video run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/mkany-story-video", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/mkany-story-video/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25273"
+BASE_PATH = "/mkany-story-video/"
