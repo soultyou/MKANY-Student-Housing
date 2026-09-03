@@ -5,6 +5,7 @@ description = "A short animated Arabic product story introducing MKANY's verifie
 version = "1.0.0"
 id = "artifacts/mkany-story-video"
 router = "path"
+videoAspectRatio = "16:9"
 
 [[services]]
 name = "web"
