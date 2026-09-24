@@ -1,0 +1,17 @@
+# .dockerignore
+node_modules/
+dist/
+.cache/
+.local/
+.conversation/
+tmp/
+out-tsc/
+*.tsbuildinfo
+*.map
+.git/
+.github/
+.vscode/
+npm-debug.log
+yarn-error.log
+.DS_Store
+Thumbs.db

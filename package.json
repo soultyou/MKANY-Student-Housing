@@ -2,18 +2,47 @@
   "name": "workspace",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
-    "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
-  },
   "private": true,
+  "workspaces": [
+    "artifacts/*",
+    "lib/*",
+    "scripts"
+  ],
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "npm run dev:api & npm run dev:frontend",
+    "dev:api": "API_PORT=3001 npm --workspace=@workspace/api-server run dev",
+    "dev:frontend": "npm --workspace=@workspace/mkany-student-housing run dev",
+    "build": "npm --workspace=@workspace/api-client-react run build && npm --workspace=@workspace/api-server run build && npm --workspace=@workspace/mkany-student-housing run build",
+    "build:cloudflare": "npm run build",
+    "deploy:cloudflare": "npx wrangler deploy",
+    "start": "node artifacts/api-server/dist/index.mjs",
+    "lint": "npm --workspace=@workspace/mkany-student-housing run typecheck"
+  },
   "dependencies": {
-    "@replit/connectors-sdk": "^0.4.1" , "svix": "^1.21.0"
+    "@clerk/clerk-react": "^5.61.3",
+    "@replit/connectors-sdk": "^0.4.1",
+    "@supabase/supabase-js": "^2.116.0",
+    "@types/leaflet": "^1.9.22",
+    "@types/multer": "^2.2.0",
+    "leaflet": "^1.9.4",
+    "multer": "^2.3.0",
+    "svix": "^1.21.0"
   },
   "devDependencies": {
     "prettier": "^3.9.6",
-    "typescript": "~5.9.3" 
-  }
+    "typescript": "~5.9.3"
+  },
+  "overrides": {
+    "esbuild": "0.27.3"
+  },
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": ""
 }

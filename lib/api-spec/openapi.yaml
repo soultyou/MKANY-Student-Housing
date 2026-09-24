@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: profile
+    description: User profile operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,47 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get current user profile
+      description: Returns the authenticated user's profile from the database
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+        "404":
+          description: User not found
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update current user profile
+      description: Updates the authenticated user's profile information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     HealthStatus:
@@ -33,4 +76,65 @@ components:
           type: string
       required:
         - status
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        clerkUserId:
+          type: string
+        fullName:
+          type: string
+        nationalId:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        university:
+          type: string
+        avatarUrl:
+          type: string
+          nullable: true
+        role:
+          type: string
+        isVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - clerkUserId
+        - fullName
+        - nationalId
+        - phoneNumber
+        - email
+        - university
+        - role
+        - isVerified
+        - createdAt
+        - updatedAt
+    UpdateProfileBody:
+      type: object
+      properties:
+        fullName:
+          type: string
+          minLength: 3
+        nationalId:
+          type: string
+          pattern: '^\\d{14}$'
+        phoneNumber:
+          type: string
+          pattern: '^(01[0125]\\d{8}|\\+201[0125]\\d{8})$'
+        university:
+          type: string
+          minLength: 2
+        avatarUrl:
+          type: string
+          nullable: true
+
 
