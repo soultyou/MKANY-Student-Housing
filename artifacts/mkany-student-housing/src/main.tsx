@@ -5,6 +5,7 @@ import App from './App';
 import { ErrorBoundary } from '@/components/error-boundary';
 import './index.css';
 
+// Production sync: Current Preview matches GitHub
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 const VITE_CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "";
 
